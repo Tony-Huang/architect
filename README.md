@@ -72,7 +72,7 @@
    
    播放端建议选择VLC. 下载地址： https://www.videolan.org/vlc/download-windows.html
    
-   ffserver 配置文件:
+   # ffserver 配置文件:
    
    HTTPPort 2000
 RTSPPort 2001
@@ -99,7 +99,6 @@ MaxBandwidth 1000
         ACL allow 192.168.0.0  192.168.255.255
 </Feed>
 
-# mp3 audio stream
 <Stream live.mp3>
         Feed feed1.ffm
 	Format mp3
@@ -113,8 +112,7 @@ MaxBandwidth 1000
 	AVOptionAudio flags +global_header
 	NoVideo
 </Stream>
-
-# mp3 audio stream in RTSP 
+ 
 <Stream live.sdp>
         Feed  feed2.ffm
 	Format rtp
@@ -132,7 +130,6 @@ MaxBandwidth 1000
 	NoVideo
 </Stream>
 
-# file mp3 audio stream in RTSP 
 <Stream file.sdp>
         Feed  feed3.ffm
 	Format rtp
@@ -158,7 +155,6 @@ MaxBandwidth 1000
 	ACL allow 192.168.0.0 192.168.255.255
 </Stream>
 
-# Redirect index.html to the appropriate site
 <Redirect index.html>
 	URL http://www.drore.com/
 </Redirect>
