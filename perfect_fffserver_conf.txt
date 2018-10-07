@@ -227,5 +227,5 @@ MaxBandwidth 5000
 
 # Redirect index.html to the appropriate site
 <Redirect index.html>
-	URL http://www.drore.com/
+	URL http://www.xyz.com/
 </Redirect>
