@@ -1,0 +1,233 @@
+ffmpeg -f dshow -i audio="Microphone Array (Realtek High Definition Audio)" -vn -acodec libmp3lame -ac 1 -b:a 64k -ar 44100   http://192.168.0.150:1234/feed2.ffm 
+
+ffmpeg -f dshow -i audio="Microphone Array (Realtek High Definition Audio)" -vn -acodec libmp3lame -ac 1 -b:a 64k -ar 44100   rtp://192.168.0.150:1235/feed2.ffm 
+
+
+1)在windows机器上列出vfw(Video for Windows Capture)捕获设备(Windows摄像头)。
+注: vfwcap已过时 ，用directshow最好
+ffmpeg -y -f vfwcap -i list
+
+输出----》
+[vfwcap @ 000001fbdc842100] Driver 0
+[vfwcap @ 000001fbdc842100]  Microsoft WDM Image Capture (Win32)
+[vfwcap @ 000001fbdc842100]  Version:  10.0.17134.1
+
+1.2)打开Windows摄像头(vfwcap) 录制录像为out.mp4 
+ffmpeg -y -f vfwcap -r 25 -i 0 out.mp4   ( 0对应于 vfwcap输出的 Driver 0 )
+
+
+2) 在windows机器上列出DirectShow设备
+ffmpeg -list_devices true -f dshow -i dummy
+
+输出----》
+[dshow @ 000002ce8f9f21c0] DirectShow video devices (some may be both video and audio devices)
+[dshow @ 000002ce8f9f21c0]  "Integrated Camera"
+[dshow @ 000002ce8f9f21c0]     Alternative name "@device_pnp_\\?\usb#vid_5986&pid_111c&mi_00#6&104790c2&0&0000#{65e8773d-8f56-11d0-a3b9-00a0c9223196}\global"
+[dshow @ 000002ce8f9f21c0] DirectShow audio devices
+[dshow @ 000002ce8f9f21c0]  "Microphone Array (Realtek High Definition Audio)"
+[dshow @ 000002ce8f9f21c0]     Alternative name "@device_cm_{33D9A762-90C8-11D0-BD43-00A0C911CE86}\wave_{CAB7B9BD-CDB7-4C24-B593-8F0441CDF615}"
+
+   2.1)列出我Windows机器上的视频设备选项/参数 
+    ffmpeg -list_options true -f dshow -i video="Integrated Camera"
+	
+	输出---->>
+	[dshow @ 00000198e04b21c0] DirectShow video device options (from video devices)
+    [dshow @ 00000198e04b21c0]  Pin "Capture" (alternative pin name "Capture")
+    [dshow @ 00000198e04b21c0]   pixel_format=yuyv422  min s=640x480 fps=30 max s=640x480 fps=30
+    [dshow @ 00000198e04b21c0]   pixel_format=yuyv422  min s=320x180 fps=30 max s=320x180 fps=30
+    [dshow @ 00000198e04b21c0]   pixel_format=yuyv422  min s=320x240 fps=30 max s=320x240 fps=30
+    [dshow @ 00000198e04b21c0]   pixel_format=yuyv422  min s=352x288 fps=30 max s=352x288 fps=30
+    [dshow @ 00000198e04b21c0]   pixel_format=yuyv422  min s=424x240 fps=30 max s=424x240 fps=30
+    [dshow @ 00000198e04b21c0]   pixel_format=yuyv422  min s=640x360 fps=30 max s=640x360 fps=30
+    [dshow @ 00000198e04b21c0]   pixel_format=yuyv422  min s=848x480 fps=20 max s=848x480 fps=20
+    [dshow @ 00000198e04b21c0]   pixel_format=yuyv422  min s=960x540 fps=15 max s=960x540 fps=15
+    [dshow @ 00000198e04b21c0]   pixel_format=yuyv422  min s=1280x720 fps=10 max s=1280x720 fps=10
+    [dshow @ 00000198e04b21c0]   vcodec=mjpeg  min s=640x480 fps=30 max s=640x480 fps=30
+    [dshow @ 00000198e04b21c0]   vcodec=mjpeg  min s=320x180 fps=30 max s=320x180 fps=30
+    [dshow @ 00000198e04b21c0]   vcodec=mjpeg  min s=320x240 fps=30 max s=320x240 fps=30
+    [dshow @ 00000198e04b21c0]   vcodec=mjpeg  min s=352x288 fps=30 max s=352x288 fps=30
+    [dshow @ 00000198e04b21c0]   vcodec=mjpeg  min s=424x240 fps=30 max s=424x240 fps=30
+    [dshow @ 00000198e04b21c0]   vcodec=mjpeg  min s=640x360 fps=30 max s=640x360 fps=30
+    [dshow @ 00000198e04b21c0]   vcodec=mjpeg  min s=848x480 fps=30 max s=848x480 fps=30
+    [dshow @ 00000198e04b21c0]   vcodec=mjpeg  min s=960x540 fps=30 max s=960x540 fps=30
+    [dshow @ 00000198e04b21c0]   vcodec=mjpeg  min s=1280x720 fps=10 max s=1280x720 fps=30
+	---忽略---
+   
+   2.2)列出我Windows机器上的音频设备选项/参数 
+    ffmpeg -list_options true -f dshow -i audio="Microphone Array (Realtek High Definition Audio)"
+	
+	输出---->>
+	[dshow @ 000002716c3e21e0] DirectShow audio only device options (from audio devices)
+    [dshow @ 000002716c3e21e0]  Pin "Capture" (alternative pin name "Capture")
+    [dshow @ 000002716c3e21e0]   min ch=1 bits=8 rate= 11025 max ch=2 bits=16 rate= 44100
+	
+
+3）打开Camera 录制录像为out.mp4
+ffmpeg -y -f vfwcap -r 20 -i "Integrated Camera" out.mp4
+
+4) 打开Camera 以directshow格式录制录像为out2.mp4
+ffmpeg -y -f dshow -r 20 -i video="Integrated Camera" out2.mp4
+
+5）打开摄像头和麦克风录制录像和声音为out3.mp4
+
+ffmpeg -y -f dshow -r 30 -i video="Integrated Camera":audio="Microphone Array (Realtek High Definition Audio)" out3.mp4
+
+6) 把接入到电脑的音频源和视频源播放出去或存本地。
+（https://stackoverflow.com/questions/19212047/ffmpeg-command-line-for-capturing-and-recording-audio-and-video-in-720p-from-d）
+存本地：ffmpeg -f dshow -video_size 640x480 -rtbufsize 702000k -framerate 30 -i video="Integrated Camera":audio="Microphone Array (Realtek High Definition Audio)" -r 30 -threads 4 -vcodec libx264 -crf 0 -preset ultrafast -f mpegts   out5.mp4
+
+多播：
+ffmpeg -f dshow -video_size 640x480 -rtbufsize 702000k -framerate 30 -i video="Integrated Camera":audio="Microphone Array (Realtek High Definition Audio)" -r 30 -threads 4 -vcodec libx264 -crf 0 -preset ultrafast -f mpegts "udp://localhost:6666"  
+player：   udp://@localhost:6666
+recording: ffmpeg -y -threads 4 -i udp://localhost:6666 -map 0 -acodec copy -vcodec copy output.mkv
+
+
+===compare
+ffmpeg -f dshow -video_size 1280x720 -rtbufsize 702000k -framerate 60 -i video="Decklink Video Capture":audio="Decklink Audio Capture" -threads 2 -f mpegts rtp://127.0.0.1:6666?pkt_size=188?buffer_size=65535
+
+ffmpeg -f dshow -video_size 1280x720 -rtbufsize 702000k -framerate 60 -i video="Decklink Video Capture":audio="Decklink Audio Capture" -threads 2 -f mpegts udp://127.0.0.1:6666?pkt_size=188?buffer_size=65535
+
+
+---实时推流
+ffmpeg -f video4linux2 -framerate 30 -i /dev/video0 http://127.0.0.1:8090/feed1.ffm
+ffmpeg -i inputfile http://localhost:10535/feed1.ffm
+
+
+==================================== 支持http推流+rtsp拉流-语音 ====================================
+1. server conf:
+
+
+HTTPPort 2000
+RTSPPort 2001
+
+<Feed feed1.ffm>
+        File feed1.ffm
+        FileMaxSize 20K
+        ACL allow 192.168.0.0  192.168.255.255
+</Feed>
+<Feed feed2.ffm>
+        File feed2.ffm
+        FileMaxSize 20K
+        ACL allow 192.168.0.0  192.168.255.255
+</Feed>
+
+# mp3 audio stream
+<Stream live.mp3>
+    Feed feed1.ffm
+	Format mp2
+
+	AudioCodec libmp3lame
+	AudioBitRate 64
+	AudioChannels 2
+	AudioSampleRate 44100
+	AVOptionAudio flags +global_header
+	NoVideo
+</Stream>
+
+# mp3 audio stream in RTSP 
+<Stream live.sdp>
+    Feed  feed2.ffm
+	Format rtp
+               
+    #libmp3lame
+    AudioCodec  libmp3lame
+	AudioBitRate 64
+	AudioChannels 2
+	AudioSampleRate 44100
+	AVOptionAudio flags +global_header
+	NoVideo
+</Stream>
+
+
+2. 推流端：
+2.1 麦克风
+ffmpeg -f dshow -i audio="Microphone Array (Realtek High Definition Audio)" -vn -acodec libmp3lame -ac 1 -b:a 64k -ar 44100    http://192.168.0.150:2000/feed2.ffm 
+2.2 文件
+  推：ffmpeg -i missNoSay.mp3 -acodec  libmp3lame   http://192.168.0.150:1234/feed2.ffm
+  播：  http://192.168.0.150:1234/live.mp3
+  
+  推: ffmpeg -i out.flv   -acodec  libmp3lame   -vcodec libx264 -tune zerolatency -crf 18  http://192.168.0.150:1234/feed1.ffm
+  播:   http://192.168.0.150:1234/demo.flv
+  
+  
+  ffmpeg -i missNoSay.mp3 -vn -acodec libmp3lame -ac 1 -b:a 64k -ar 44100    http://192.168.0.150:2000/feed3.ffm 
+
+3. 播放：
+3.1 from 麦克风：
+rtsp://192.168.0.150:2001/live.sdp
+3.2 from file:
+rtsp://192.168.0.150:2001/file.sdp
+
+
+
+-------------------------link computr and mobile phone===========
+https://us.softpedia-secure-download.com/dl/5f5e67423d6cec577cdffb710cdd8658/5b962eee/300505005/drivers/bluetooth/BTW_6.5.1.6930_win7_vista_x64.zip
+
+------------ wireshark ---------------------
+https://1.na.dl.wireshark.org/win64/Wireshark-win64-2.6.3.exe
+
+
+ffmpeg -f dshow -video_size 480x272 -rtbufsize 702000k -framerate 30 -i video="Integrated Camera":audio="Microphone Array (Realtek High Definition Audio)" -r 30  -vcodec libx264  -acodec  libmp3lame   http://192.168.0.150:1234/feed2.ffm
+
+ffmpeg -y -f dshow -r 25 -i video="Integrated Camera":audio="Microphone Array (Realtek High Definition Audio)" http://192.168.0.150:1234/feed2.ffm
+
+
+常见的音视频格式：
+1.视频+音频：
+封装格式       视频格式             音频格式
+flv        :  VideoCodec libx264 , AudioCodec aac         (或者写成 H264 + AAC)---ffserver显式支持
+flv        :  VideoCodec libx264 , AudioCodec libmp3lame  (或者写成 H264 + MP3)---     VLC显式支持
+mpegts(ts) :  VideoCodec libx264 , AudioCodec aac         (或者写成 H264 + AAC)---ffserver显式支持 
+mpegts(ts) :  VideoCodec libx264 , AudioCodec libmp3lame  (或者写成 H264 + MP3)---     VLC显式支持 
+webm       :                                              (或者写成 VP80 + Vorbis)---  VLC显式支持    
+mp4        :                                              (或者写成 H264 + MP3)---     VLC显式支持
+ogg        :  VideoCodec libtheora,AudioCodec libvorbis   (或者写成 Theora + Vorbis)---ffserver和VLC都显式支持 
+rm         :  
+
+2.音频格式
+封装格式     音频格式
+mp3        :   libmp3lame
+aac        :   AAC
+ogg        :   Vorbis
+flac       :   FLAC
+
+
+
+ 1. feed:   http://192.169.0.150:3000/feed4.ffm
+ 
+ ffmpeg command :   ffmpeg   -rtbufsize 1500M  -y -f dshow  -r 24 -i video="Integrated Camera":audio="Microphone Array (Realtek High Definition Audio)"   -acodec aac -ac 1  -b:a 128k -ar 44100     http://192.168.0.150:3000/feed4.ffm
+                    ffmpeg    -y -f dshow  -r 30  -i video="Integrated Camera":audio="Microphone Array (Realtek High Definition Audio)"   -acodec aac -ac 1  -b:a 128k -ar 44100     http://192.168.0.150:3000/feed4.ffm
+		    ffmpeg    -y -f dshow  -r 30  -i video="Integrated Camera":audio="Microphone Array (Realtek High Definition Audio)"  -vcodec libx264 -acodec aac -ac 1  -b:a 128k -ar 44100     http://192.168.0.150:3000/feed4.ffm
+	play:  http://192.169.0.150:3000/live.flv  
+
+ 2. feed: http://192.169.0.150:3000/feed5.ffm
+ 
+ ffmpeg command :  ffmpeg    -y -f dshow  -r 30  -i video="Integrated Camera":audio="Microphone Array (Realtek High Definition Audio)"    -acodec aac  -ac 2  -b:a 128k -ar 44100     http://192.168.0.150:3000/feed5.ffm 
+ 
+  http://192.168.0.150:3000/live.ts
+ 
+ 3. feed:  http://192.169.0.150:3000/feed6.ffm
+ 
+ ffmpeg command : 
+ 
+ rtsp://192.168.0.150:3001/avmp4.sdp   
+ 
+ 4. feed:  http://192.169.0.150:3000/feed7.ffm
+ rtsp://192.168.0.150:3001/avogg.sdp  
+
+ 
+ 5. feed:  http://192.168.0.150:3000/feed8.ffm
+ cmd:  ffmpeg    -y -f dshow  -r 24  -i video="Integrated Camera":audio="Microphone Array (Realtek High Definition Audio)" -vcodec libtheora   -acodec libvorbis  -ac 2  -b:a 64k -ar 44100     http://192.168.0.150:3000/feed8.ffm
+
+
+---------------------------- av.flv ---------------------- not work
+       ffmpeg    -y -f dshow  -r 30  -i video="Integrated Camera":audio="Microphone Array (Realtek High Definition Audio)"  -vcodec libx264 -acodec aac -ac 1  -b:a 128k -ar 44100     http://192.168.0.150:3005/feed4.ffm
+play:  http://192.169.0.150:3005/live.flv 
+
+
+-------------------------- av.ogg ---------------not work
+ ffmpeg    -y -f dshow  -r 24  -i video="Integrated Camera":audio="Microphone Array (Realtek High Definition Audio)"  -vcodec libtheora  -acodec libvorbis  -ac 2  -b:a 64k -ar 44100     http://192.168.0.150:3010/feed8.ffm 
+play:  http://192.169.0.150:3010/live.rm
+
+
+ 
