@@ -62,6 +62,111 @@
    
    nodeJS 下载: https://nodejs.org/en/download/
    
+  二 流媒体。
+   1) ffserver搭建流媒体服务器
+  支持HTTP推流，RTSP或HTTP播放。
+  
+   下载地址： https://ffbinaries.com/downloads ，选择ffmpeg 3.4 binaries ->ffserer ->选合适的CPU架构
+   
+   推流端下载ffmpeg.
+   
+   播放端建议选择VLC. 下载地址： https://www.videolan.org/vlc/download-windows.html
+   
+   ffserver 配置文件:
+   
+   HTTPPort 2000
+RTSPPort 2001
+MaxHTTPConnections 100
+MaxClients 100
+MaxBandwidth 1000
+
+
+<Feed feed1.ffm>
+        File feed1.ffm
+        FileMaxSize 20M
+        ACL allow 192.168.0.0  192.168.255.255
+</Feed>
+
+<Feed feed2.ffm>
+        File feed2.ffm
+        FileMaxSize 50M
+        ACL allow 192.168.0.0  192.168.255.255
+</Feed>
+
+<Feed feed3.ffm>
+        File feed3.ffm
+        FileMaxSize 50M
+        ACL allow 192.168.0.0  192.168.255.255
+</Feed>
+
+# mp3 audio stream
+<Stream live.mp3>
+        Feed feed1.ffm
+	Format mp3
+
+	#RTSPOption  rtsp_transport  tcp
+	#RTSPOption  rtsp_flags  prefer_tcp
+	AudioCodec libmp3lame
+	AudioBitRate 64
+	AudioChannels 2
+	AudioSampleRate 44100
+	AVOptionAudio flags +global_header
+	NoVideo
+</Stream>
+
+# mp3 audio stream in RTSP 
+<Stream live.sdp>
+        Feed  feed2.ffm
+	Format rtp
+
+	#min_port 1200
+	#max_port 65535
+	#RTSPOption  rtsp_transport  tcp
+  	#RTSPOption  rtsp_flags  prefer_tcp
+        #libmp3lame
+        AudioCodec  libmp3lame
+	AudioBitRate 64
+	AudioChannels 2
+	AudioSampleRate 44100
+	AVOptionAudio flags +global_header
+	NoVideo
+</Stream>
+
+# file mp3 audio stream in RTSP 
+<Stream file.sdp>
+        Feed  feed3.ffm
+	Format rtp
+
+	#min_port 1205
+	#max_port 65535
+	#RTSPOption  rtsp_transport  tcp
+	#RTSPOption  rtsp_flags  prefer_tcp 
+        #libmp3lame
+        AudioCodec  libmp3lame
+	AudioBitRate 64
+	AudioChannels 2
+	AudioSampleRate 44100
+	AVOptionAudio flags +global_header
+	NoVideo
+</Stream>
+
+
+<Stream stat.html>
+	Format status
+	# Only allow local people to get the status
+	ACL allow localhost
+	ACL allow 192.168.0.0 192.168.255.255
+</Stream>
+
+# Redirect index.html to the appropriate site
+<Redirect index.html>
+	URL http://www.drore.com/
+</Redirect>
+   
+   
+   
+    
+   
    
    
    
