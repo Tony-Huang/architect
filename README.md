@@ -74,6 +74,14 @@
    
    ffserver在出现音频流后不能再出现单独的视频流,所以在配置文件中要注意。
    
+   #fferver documentation:  
+   https://ffmpeg.org/ffserver.html
+   
+   https://trac.ffmpeg.org/wiki/ffserver
+   
+   # ffmpeg docuemntation:
+   http://ffmpeg.org/
+   
    # ffserver 配置文件:
    
    HTTPPort 2000
