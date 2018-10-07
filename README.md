@@ -72,6 +72,8 @@
    
    播放端建议选择VLC. 下载地址： https://www.videolan.org/vlc/download-windows.html
    
+   ffserver在出现音频流后不能再出现单独的视频流,所以在配置文件中要注意。
+   
    # ffserver 配置文件:
    
    HTTPPort 2000
@@ -148,6 +150,25 @@ MaxBandwidth 1000
 <Redirect index.html>
 	URL http://www.xyz.com/
 </Redirect>
+
+启动ffserver:  ./ffserver  -f  ffserver.conf ( ./ffserver -d -f  ffserver.conf  [以debug 模式启动])
+
+windows上推流麦克风（只有音频无视频）：
+
+ ffmpeg -f dshow -i audio="Microphone Array (Realtek High Definition Audio)" -vn -acodec libmp3lame -ac 1 -b:a 64k -ar 44100   http://192.168.0.150:1234/feed2.ffm 
+ 
+ 播放 ： vlc rtps://host:ip/live.sdp
+ 
+ windows上推流文件(只有音频无视频)：
+ 
+ ffmpeg -i missNoSay.mp3 -acodec  libmp3lame   http://192.168.0.150:1234/feed2.ffm
+ 
+ 推流flv文件(视频+音频）：
+  ffmpeg -i out.flv   -acodec  libmp3lame   -vcodec libx264 -tune zerolatency -crf 18  http://192.168.0.150:1234/feed1.ffm
+  
+  
+ 
+ 
    
    
    
