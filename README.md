@@ -253,6 +253,11 @@ docker network rm xxx
 
 docker netowrk prune
 
+# 阿里云容器镜像加速器
+https://8sdh8qa1.mirror.aliyuncs.com
+
+。。。
+
 
 
 
