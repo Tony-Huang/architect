@@ -1,7 +1,7 @@
 # architect
 架构相关记录
 
-一 试图用各种语言和框架搭建一个静态web-server，只处理get请求，对服务器端目录和文件陈列.
+# 一 试图用各种语言和框架搭建一个静态web-server，只处理get请求，对服务器端目录和文件陈列.
 
 1. python
 
@@ -62,7 +62,7 @@
    
    nodeJS 下载: https://nodejs.org/en/download/
    
-  二 流媒体。
+  # 二 流媒体。
    1) ffserver搭建流媒体服务器
   支持HTTP推流，RTSP或HTTP播放。
   
@@ -74,7 +74,7 @@
    
    ffserver在出现音频流后不能再出现单独的视频流,所以在配置文件中要注意。
    
-   #fferver documentation:  
+   # fferver documentation:  
    https://ffmpeg.org/ffserver.html
    
    https://trac.ffmpeg.org/wiki/ffserver
