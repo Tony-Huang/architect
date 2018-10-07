@@ -181,68 +181,69 @@ windows上推流麦克风（只有音频无视频）：
   
   1. build docker image and run container
 
-docker build -t  <image-name> .
+ docker build -t  <image-name>  .
 
-docker run -p exposedPort:innerPort  <image-name>
+ docker run -p exposedPort:innerPort  {image-name}
 
-docker tag <image-name>  username/repository:tag
+ docker tag <image-name>  username/repository:tag
 
-docker push username/repository:tag
+ docker push username/repository:tag
 
-docker pull username/repository:tag
+ docker pull username/repository:tag
 
-docker run -p exposedPort:innerPort  username/repository:tag
+ docker run -p exposedPort:innerPort  username/repository:tag
 
 
 enter an running container with console:
 
-  docker run -it <continer> /bin/bash
+    docker run -it <continer> /bin/bash
 
 
 2. run app/service and manage tasks
 
 use swarm:
 
- docker swarm init
+     docker swarm init
 
 deploy an app:
 
-  docker stack deploy -c docker-compose.yml  <appName>
+      docker stack deploy -c docker-compose.yml  {appName}
 
 list all app:
 
-  docker stack ls 
+      docker stack ls 
   
 
 list the services in an app:
 
-  docker stack services <appName> 
+      docker stack services {appName} 
 	
 
 list all services:
 
-  docker service ls
+     docker service ls
   
 
 list all tasks in a service: (a contianer instance in a service called as task )
 
-  docker service ps  <serviceName>   ( serviceName=appName_service )
+    docker service ps  <serviceName>   ( serviceName=appName_service )
 	
 
 tear down an app:
-  docker stack rm <appName>
+
+     docker stack rm <appName>
 	
 
 3. docker-compose build
  
 
- docker-compose start
+     docker-compose start
  
- docker-compose stop
+    docker-compose stop
  
- docker-compose up
+    docker-compose up
  
- docker-compose down
+    docker-compose down
  
 4. docker network mgt
 
