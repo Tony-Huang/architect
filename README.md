@@ -33,22 +33,29 @@
 	python 下载: https://www.python.org/downloads/
 	
 2. nodeJS
+
    Linux 安装nodeJS:
+   
    $ yum install nodejs -y
    
    $ yum update openssl -y
    
    $ npm install -g http-server
    
+   
    Window 安装nodeJS:
+   
     到nodejs网站下载稳定版安装包进行安装.
+    
    
    安装完成后，输入node -v 和npm -v 检验是否安装成功。(如果是centos7.2或者Redhat 7.x , 则分别是v6.12.3 , v3.10.10)
  
    到你的目录下执行:
+   
    http-server 
    
    到http://localhost:8080 查看结果.
+   
    如果当前目录有html,css,javascripts则就是个静态web-server
    
    nodeJS 网站: https://nodejs.org/en/
