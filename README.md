@@ -193,46 +193,66 @@ docker pull username/repository:tag
 
 docker run -p exposedPort:innerPort  username/repository:tag
 
+
 enter an running container with console:
- docker run -it <continer> /bin/bash
+
+  docker run -it <continer> /bin/bash
+
 
 2. run app/service and manage tasks
 
 use swarm:
+
  docker swarm init
 
 deploy an app:
+
   docker stack deploy -c docker-compose.yml  <appName>
 
 list all app:
+
   docker stack ls 
+  
 
 list the services in an app:
+
   docker stack services <appName> 
+	
 
 list all services:
+
   docker service ls
+  
 
 list all tasks in a service: (a contianer instance in a service called as task )
+
   docker service ps  <serviceName>   ( serviceName=appName_service )
+	
 
 tear down an app:
   docker stack rm <appName>
+	
 
 3. docker-compose build
  
 
  docker-compose start
+ 
  docker-compose stop
  
  docker-compose up
+ 
  docker-compose down
  
 4. docker network mgt
 
 docker network ls
+
 docker network rm xxx
+
 docker netowrk prune
+
+
 
 
  
