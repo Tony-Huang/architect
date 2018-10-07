@@ -1,0 +1,231 @@
+HTTPPort 3000
+RTSPPort 3001
+MaxHTTPConnections 100
+MaxClients 100
+MaxBandwidth 5000
+
+
+<Feed feed1.ffm>
+        File feed1.ffm
+        FileMaxSize 20M
+        ACL allow 192.168.0.0  192.168.255.255
+</Feed>
+
+<Feed feed2.ffm>
+        File feed2.ffm
+        FileMaxSize 50M
+        ACL allow 192.168.0.0  192.168.255.255
+</Feed>
+
+<Feed feed3.ffm>
+        File feed3.ffm
+        FileMaxSize 50M
+        ACL allow 192.168.0.0  192.168.255.255
+</Feed>
+
+<Feed feed4.ffm>
+        File feed4.ffm
+        FileMaxSize 50M
+        ACL allow 192.168.0.0  192.168.255.255
+</Feed>
+
+<Feed feed5.ffm>
+        File feed5.ffm
+        FileMaxSize 50M
+        ACL allow 192.168.0.0  192.168.255.255
+</Feed>
+
+<Feed feed6.ffm>
+        File feed6.ffm
+        FileMaxSize 50M
+        ACL allow 192.168.0.0  192.168.255.255
+</Feed>
+
+<Feed feed7.ffm>
+        File feed7.ffm
+        FileMaxSize 50M
+        ACL allow 192.168.0.0  192.168.255.255
+</Feed>
+
+<Feed feed8.ffm>
+        File feed8.ffm
+        FileMaxSize 50M
+        ACL allow 192.168.0.0  192.168.255.255
+</Feed>
+
+
+# mp3 audio stream
+<Stream live.mp3>
+        Feed feed1.ffm
+	Format mp3
+
+	#RTSPOption  rtsp_transport  tcp
+	#RTSPOption  rtsp_flags  prefer_tcp
+	AudioCodec libmp3lame
+	AudioBitRate 64
+	AudioChannels 2
+	AudioSampleRate 44100
+	AVOptionAudio flags +global_header
+	NoVideo
+</Stream>
+
+# mp3 audio stream in RTSP 
+<Stream live.sdp>
+        Feed  feed2.ffm
+	Format rtp
+
+	#min_port 1200
+	#max_port 65535
+	#RTSPOption  rtsp_transport  tcp
+  	#RTSPOption  rtsp_flags  prefer_tcp
+        #libmp3lame
+        AudioCodec  libmp3lame
+	AudioBitRate 64
+	AudioChannels 2
+	AudioSampleRate 44100
+	AVOptionAudio flags +global_header
+	NoVideo
+</Stream>
+
+# file mp3 audio stream in RTSP 
+<Stream file.sdp>
+        Feed  feed3.ffm
+	Format rtp
+
+	#min_port 1205
+	#max_port 65535
+	#RTSPOption  rtsp_transport  tcp
+	#RTSPOption  rtsp_flags  prefer_tcp 
+        #libmp3lame
+        AudioCodec  libmp3lame
+	AudioBitRate 64
+	AudioChannels 2
+	AudioSampleRate 44100
+	AVOptionAudio flags +global_header
+	NoVideo
+</Stream>
+
+#  fLv (Audio+Video) stream in http
+<Stream live.flv>
+	Format flv
+	Feed feed4.ffm
+
+	VideoCodec libx264
+	VideoFrameRate 30
+	VideoBitRate 512
+	VideoSize 600x400
+	AVOptionVideo crf 23
+	AVOptionVideo preset medium
+	# for more info on crf/preset options, type: x264 --help
+	AVOptionVideo flags +global_header
+
+	AudioCodec aac
+	Strict -2
+	AudioBitRate 128
+	AudioChannels 2
+	AudioSampleRate 44100
+	AVOptionAudio flags +global_header
+</Stream>
+
+#mpegts (audio+video) stream in http
+<Stream live.ts>
+	Format mpegts
+	Feed feed5.ffm
+
+	VideoCodec libx264
+	VideoFrameRate 30
+	VideoBitRate 512
+	VideoSize 600x400
+	AVOptionVideo crf 23
+	AVOptionVideo preset medium
+	# for more info on crf/preset options, type: x264 --help
+	AVOptionVideo flags +global_header
+
+	AudioCodec aac
+	Strict -2
+	AudioBitRate 128
+	AudioChannels 2
+	AudioSampleRate 44100
+	AVOptionAudio flags +global_header
+</Stream>
+
+#mpegts (audio+video) stream in RTSP
+<Stream mpegts.sdp>
+	Format rtp
+	Feed feed6.ffm
+
+	VideoCodec libx264
+	VideoFrameRate 30
+	VideoBitRate 512
+	VideoSize 600x400
+	AVOptionVideo crf 23
+	AVOptionVideo preset medium
+	# for more info on crf/preset options, type: x264 --help
+	AVOptionVideo flags +global_header
+
+	AudioCodec aac
+	Strict -2
+	AudioBitRate 128
+	AudioChannels 2
+	AudioSampleRate 44100
+	AVOptionAudio flags +global_header
+</Stream>
+
+#ogg(audio+video) stream in RTSp
+<Stream avogg.sdp>
+	Format rtp
+	Feed feed7.ffm
+
+	VideoCodec libtheora
+	VideoFrameRate 24
+	VideoBitRate 512
+	VideoSize 320x240
+	VideoQMin 1
+	VideoQMax 31
+	VideoGopSize 12
+	Preroll 0
+	AVOptionVideo flags +global_header
+
+	AudioCodec libvorbis
+	AudioBitRate 64
+	AudioChannels 2
+	AudioSampleRate 44100
+	AVOptionAudio flags +global_header
+</Stream>
+
+# ogg(audio+video) stream in http
+<Stream live.ogg>
+	Format ogg
+	Feed feed8.ffm
+
+	VideoCodec libtheora
+	VideoFrameRate 24
+	VideoBitRate 512
+	VideoSize 600x400
+	VideoQMin 1
+	VideoQMax 31
+	VideoGopSize 12
+	Preroll 0
+	AVOptionVideo flags +global_header
+
+	AudioCodec libvorbis
+	AudioBitRate 64
+	AudioChannels 2
+	AudioSampleRate 44100
+	AVOptionAudio flags +global_header
+</Stream>
+
+
+
+
+<Stream stat.html>
+	Format status
+	# Only allow local people to get the status
+	ACL allow localhost
+	ACL allow 192.168.0.0 192.168.255.255
+</Stream>
+
+# Redirect index.html to the appropriate site
+<Redirect index.html>
+	URL http://www.drore.com/
+</Redirect>
