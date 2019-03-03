@@ -27,7 +27,7 @@
 
   1.2 Python3 
     下载python3.x安装包进行安装，修改环境变量PATH使其包含python3.x安装目录.
-	将1.1步骤中的SimpleHTTPServer换成 http-server,按步骤执行即可。
+	将1.1步骤中的SimpleHTTPServer换成 http.server,按步骤执行即可。
 	
 	python 网站：https://www.python.org/
 	python 下载: https://www.python.org/downloads/
