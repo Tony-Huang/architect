@@ -14,14 +14,14 @@
 	  然后到任意一个目录，执行 http-server  {port} ;比如:
 	  > cd d:\my-python-projects\simpleServer
 	  
-	  > python SimpleHTTPServer  9099
+	  > python -m SimpleHTTPServer  9099
 	  
 	Linux :Linux 自带python2.7,无需安装
 	 $ pip install SimpleHTTPServer
 	 
 	 $ cd ~/my-python-projects\simpleServer
 	 
-	 $ python SimpleHTTPServer 9099
+	 $ python -m SimpleHTTPServer 9099
 	 
 	 到http://localhost:9099 查看结果
 
