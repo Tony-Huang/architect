@@ -11,7 +11,7 @@
     
        > python -m pip install SimpleHTTPServer
        
-	  然后到任意一个目录，执行 http-server  {port} ;比如:
+	  然后到任意一个目录，执行 SimpleHTTPServer  {port} ;比如:
 	  > cd d:\my-python-projects\simpleServer
 	  
 	  > python -m SimpleHTTPServer  9099
